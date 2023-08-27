@@ -77,8 +77,8 @@ contract Nft is
         if (voucher.stableCoinAddress != address(0))
         {
             IERC20 stableCoin = IERC20(voucher.stableCoinAddress);
-            require(stableCoin.balanceOf(msg.sender) >= voucher.minTokenPrice, "Insufficient stable coin balance to redeem");
-            require(stableCoin.allowance(msg.sender, revenuesWallet) >= voucher.minTokenPrice, "Insufficient stable coin allowance for revenuesWallet to redeem");
+            require(stableCoin.balanceOf(msg.sender) >= voucher.minStableCoinPrice, "Insufficient stable coin balance to redeem");
+            require(stableCoin.allowance(msg.sender, revenuesWallet) >= voucher.minStableCoinPrice, "Insufficient stable coin allowance for revenuesWallet to redeem");
         }
 
         if (voucher.tokenAddress != address(0))

@@ -10,7 +10,7 @@ import { Nft } from "../typechain-types";
 
 const decimals = new BN(10).pow(new BN(18));
 const defaultStableCoinPrice = BigInt(new BN(500).mul(decimals)); // 500 BUSD
-const defaultTokenPrice = BigInt(new BN(500).mul(decimals)); // 500 PRZ
+const defaultTokenPrice = BigInt(new BN(10000).mul(decimals)); // 10000 PRZ
 
 describe("Nft", function () {
     async function deploy() {

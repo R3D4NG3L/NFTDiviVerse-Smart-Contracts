@@ -11,3 +11,7 @@ artifacts
 
 # Envinroment
 secrets.json
+
+# Generated Vouchers
+mainnet-nft-vouchers.json
+testnet-nft-vouchers.json

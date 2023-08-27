@@ -73,7 +73,7 @@ async function redeemNft(contract : Nft, token: Token, busd : TestBUSD, owner: a
 
 const decimals = new BN(10).pow(new BN(18));
 const defaultStableCoinPrice = BigInt(new BN(500).mul(decimals)); // 500 BUSD
-const defaultTokenPrice = BigInt(new BN(500).mul(decimals)); // 500 PRZ
+const defaultTokenPrice = BigInt(new BN(10000).mul(decimals)); // 10000 PRZ
 
 describe("Integration Testing", function () {
     async function deploy() {
@@ -167,7 +167,7 @@ describe("Integration Testing", function () {
 
         // Check premium reflections balance
         let premiumReflectionsBalance = await contract.connect(redeemer).checkHolderPremiumReflectionsBalance(token.address);
-        let expectedPremiumReflectionsBalance = new BN("16385580379713041842551");
+        let expectedPremiumReflectionsBalance = new BN("16385580518928193858232");
         expect(premiumReflectionsBalance).to.equal(BigInt(expectedPremiumReflectionsBalance));
         console.log(`1° Iteration - premiumReflectionsBalance: ${premiumReflectionsBalance}`);
 
@@ -175,7 +175,7 @@ describe("Integration Testing", function () {
         console.log(`Retriggering taxes redistribution...`);
         await triggerTaxesRedistribution(token, owner, redeemer, addr2, addr3, router);
         premiumReflectionsBalance = await contract.connect(redeemer).checkHolderPremiumReflectionsBalance(token.address);
-        expectedPremiumReflectionsBalance = new BN("46885979480446021711656");
+        expectedPremiumReflectionsBalance = new BN("46885980107746025193240");
         expect(premiumReflectionsBalance).to.equal(BigInt(expectedPremiumReflectionsBalance));
         console.log(`2° Iteration - premiumReflectionsBalance: ${premiumReflectionsBalance}`);
     });
@@ -187,7 +187,7 @@ describe("Integration Testing", function () {
 
         // Check premium reflections balance
         let premiumReflectionsBalance = await contract.connect(redeemer).checkHolderPremiumReflectionsBalance(token.address);
-        let expectedPremiumReflectionsBalance = new BN("16385580379713041842551");
+        let expectedPremiumReflectionsBalance = new BN("16385580518928193858232");
         console.log(`premiumReflectionsBalance before 2° NFT holder joins: ${premiumReflectionsBalance}`);
         expect(premiumReflectionsBalance).to.equal(BigInt(expectedPremiumReflectionsBalance));
 
@@ -209,7 +209,7 @@ describe("Integration Testing", function () {
         console.log(`Retriggering taxes redistribution...`);
         await triggerTaxesRedistribution(token, owner, redeemer, addr2, addr3, router);
         premiumReflectionsBalance = await contract.connect(redeemer).checkHolderPremiumReflectionsBalance(token.address);
-        expectedPremiumReflectionsBalance = new BN("46885979493951057726330").div(new BN("2"));
+        expectedPremiumReflectionsBalance = new BN("46885980377939600465534").div(new BN("2"));
         console.log(`2° Iteration - premiumReflectionsBalance of original redeemer: ${premiumReflectionsBalance}`);
         expect(premiumReflectionsBalance).to.equal(BigInt(expectedPremiumReflectionsBalance));
 
@@ -225,7 +225,7 @@ describe("Integration Testing", function () {
 
         // Check premium reflections balance
         let premiumReflectionsBalance = await contract.connect(redeemer).checkHolderPremiumReflectionsBalance(token.address);
-        let expectedPremiumReflectionsBalance = new BN("16385580379713041842551");
+        let expectedPremiumReflectionsBalance = new BN("16385580518928193858232");
         console.log(`premiumReflectionsBalance before 2° NFT holder joins: ${premiumReflectionsBalance}`);
         expect(premiumReflectionsBalance).to.equal(BigInt(expectedPremiumReflectionsBalance));
 
@@ -249,12 +249,12 @@ describe("Integration Testing", function () {
 
         // 1° NFT holder should have 2/3 of reflections
         premiumReflectionsBalance = await contract.connect(redeemer).checkHolderPremiumReflectionsBalance(token.address);
-        expectedPremiumReflectionsBalance = new BN("16385580379713041842550").div(new BN("3")).mul(new BN("2"));
+        expectedPremiumReflectionsBalance = new BN("16385580518928193858228").div(new BN("3")).mul(new BN("2"));
         console.log(`premiumReflectionsBalance of original redeemer after buying 2° NFT: ${premiumReflectionsBalance}`);
         expect(premiumReflectionsBalance).to.equal(BigInt(expectedPremiumReflectionsBalance.add(new BN("2"))));
         // 2° NFT holder should have 1/3 of reflections
         premiumReflectionsBalance = await contract.connect(addr2).checkHolderPremiumReflectionsBalance(token.address);
-        expectedPremiumReflectionsBalance = new BN("16385580379713041842550").div(new BN("3")).mul(new BN("1"));
+        expectedPremiumReflectionsBalance = new BN("16385580518928193858228").div(new BN("3")).mul(new BN("1"));
         console.log(`premiumReflectionsBalance of 2° NFT holder, holding 1/3 of total reflections: ${premiumReflectionsBalance}`);
         expect(premiumReflectionsBalance).to.equal(BigInt(expectedPremiumReflectionsBalance.add(new BN("1"))));
     });

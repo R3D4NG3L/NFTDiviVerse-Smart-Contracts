@@ -11,7 +11,7 @@ const fs = require('fs');
 
 const decimals = new BN(10).pow(new BN(18));
 const defaultStableCoinPrice = BigInt(new BN(500).mul(decimals)); // 500 BUSD
-const defaultTokenPrice = BigInt(new BN(500).mul(decimals)); // 500 PRZ
+const defaultTokenPrice = BigInt(new BN(10000).mul(decimals)); // 10000 PRZ
 
 describe("Nft", function () {
     async function deploy() {
@@ -84,5 +84,24 @@ describe("Nft", function () {
         }
         let jsonData = JSON.stringify(vouchers, (_, v) => typeof v === 'bigint' ? v.toString() : v);
         fs.writeFileSync('testnet-nft-vouchers.json', jsonData);
+    });
+    it("Should generate 5000 vouchers and save them on a json file for mainnet", async function () {
+        console.log(`--------------------------------------------`);
+        console.log(`Should generate 5000 vouchers and save them on a json file for mainnet`);
+        console.log(`--------------------------------------------`);
+        const { contract, redeemerContract, mainnetDeployer, testnetDeployer, token, busd} = await loadFixture(deploy);
+        const lazyMinter = new LazyMinter({ contract, signer: mainnetDeployer });
+        const busdAddressTestnet = "0x55d398326f99059fF775485246999027B3197955";
+        const praizaAddressTestnet = "0xfB8204De22A295A6FCE27dAC2405AE0691633E39";
+        console.log(`--------------------------------------------`);
+        let vouchers = new Array();
+        let nVouchersToGenerate = 5000;
+        for (let i = 1; i <= nVouchersToGenerate; i++) {
+            let voucher = await lazyMinter.createVoucher(i, "ipfs://bafybeifcyhqbgteknd5yqut7onimh7ftoy55mlpa2qaskczobkf5ueo3km", busdAddressTestnet, defaultStableCoinPrice, praizaAddressTestnet, defaultTokenPrice, true);
+            vouchers.push(voucher);
+            console.log (`Generated voucher [${i}/${nVouchersToGenerate}] - ${voucher}`);
+        }
+        let jsonData = JSON.stringify(vouchers, (_, v) => typeof v === 'bigint' ? v.toString() : v);
+        fs.writeFileSync('mainnet-nft-vouchers.json', jsonData);
     });
 });
